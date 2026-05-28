@@ -33,7 +33,6 @@ Local agent configuration for preparing Call of Cthulhu 7th Edition one-shots an
 - `.agents/skills/references/`: shared reference docs used by multiple rules knowledge-store skills.
 - `templates/`: keeper-facing templates for scenario briefs, clue maps, NPC rosters, and session plans.
 - `tests/fixtures/`: only synthetic or public-domain samples for prompt and workflow tests.
-- `tests/prompts/`: stable prompt inputs for manual or scripted regression runs.
 - `tests/`: regression checks that operate only on synthetic or public-domain inputs.
 
 ## Local helper scripts

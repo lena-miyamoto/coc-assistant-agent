@@ -53,5 +53,4 @@ The CoC assistant helps a keeper turn local Call of Cthulhu 7th Edition scenario
 - `.agents/skills/` contains shared on-demand workflows such as rules knowledge-store bootstrapping and lookup.
 - `coc-db/` contains the local text-based rules knowledge store built from `resources/rules/`.
 - `tests/fixtures/` contains synthetic or public-domain samples for prompt tests.
-- `tests/prompts/` contains stable prompt inputs for regression runs.
 - `tests/` contains regression checks that never rely on copyrighted source files.
