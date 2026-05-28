@@ -30,11 +30,13 @@ This file is the canonical shared behavior contract for the platform-specific ag
 - Use Python 3 for repository utilities and test helpers.
 - Run repository Python commands through `uv`: `uv sync`, then `uv run python ...`.
 - When the user provides a scenario PDF or folder plus a scenario name, use `uv run python .agents/scripts/import_scenario.py ...` only as an internal extraction-staging step.
-- After the staging step, author these keeper-facing deliverables by default: `scenarios/<scenario-name>/npcs-and-enemies.md`, `scenarios/<scenario-name>/story-overview.md`, and `scenarios/<scenario-name>/keeper-notes.md`.
+- If the provided PDF or folder may contain multiple scenarios, the staging step should isolate the requested scenario inside `.source-extract.md` by exact scenario-title match plus scenario-specific handout/map references before drafting; do not rely on generic repeated headings alone.
+- Only include facts that can be traced to the scoped scenario section or its scenario-specific handouts and maps; exclude anthology front matter, neighboring scenarios, pregens, and unrelated appendices unless the target scenario explicitly reuses them.
+- After the staging step, author these keeper-facing deliverables by default: `scenarios/<scenario-name>/npcs-and-enemies.md`, `scenarios/<scenario-name>/story-overview.md`, `scenarios/<scenario-name>/keeper-notes.md`, `scenarios/<scenario-name>/clue-map.md`, and `scenarios/<scenario-name>/session-plan.md`.
 - Do not treat the raw extraction as user-facing output.
 - All final scenario deliverables must consistently use the predominant language of the source material unless the user explicitly asks for translation.
 - In the default scenario package, `keeper-notes.md` may reference `npcs-and-enemies.md`, but `npcs-and-enemies.md` must remain standalone and must not depend on `keeper-notes.md` for essential character information.
-- Before finishing an import-scenario workflow, validate the final scenario package against `scenarios/<scenario-name>/.source-extract.md` and repair any missing essential information rather than accepting information loss from summarization.
+- Before finishing an import-scenario workflow, validate the final scenario package against the scoped scenario content in `scenarios/<scenario-name>/.source-extract.md` and repair any missing essential information or out-of-scope leakage rather than accepting information loss from summarization.
 - For rules-heavy work, prefer the local `coc-db/` knowledge store after it has been built, especially `indexes/`, `topics/`, and `sources/`.
 - If `coc-db/` already contains generated data, ask whether the user wants `--update` or `--rebuild` before refreshing it.
 
@@ -52,7 +54,7 @@ This file is the canonical shared behavior contract for the platform-specific ag
 - Clue map: mandatory clues, optional clues, clue dependencies, failure recovery.
 - Session plan: likely scene order, pacing notes, branch points, fallback scenes.
 - Campaign adaptation notes: how to connect scenarios, preserve themes, and reseed clues.
-- Default imported scenario package: `npcs-and-enemies.md`, `story-overview.md`, `keeper-notes.md`.
+- Default imported scenario package: `npcs-and-enemies.md`, `story-overview.md`, `keeper-notes.md`, `clue-map.md`, `session-plan.md`.
 
 ## Repository support files
 
