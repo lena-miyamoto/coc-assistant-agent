@@ -1,0 +1,17 @@
+[project]
+name = "coc-assistant-agent"
+version = "0.1.0"
+description = "Local Call of Cthulhu 7e keeper-assistant configuration for scenario prep"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "gxhash>=0.6.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
