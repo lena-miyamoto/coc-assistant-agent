@@ -6,6 +6,9 @@ resources/**
 !resources/scenarios/
 !resources/scenarios/.gitkeep
 
+scenarios/**
+!scenarios/.gitkeep
+
 coc-db/**
 !coc-db/.gitignore
 

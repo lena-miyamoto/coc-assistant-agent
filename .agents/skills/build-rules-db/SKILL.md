@@ -9,6 +9,8 @@ user-invocable: true
 
 Build the local machine-readable rules knowledge store from the user's privately supplied rulebook files.
 
+Follow the shared sourcing, extraction, and tooling rules in [assistant spec](../../assistant-spec.md).
+
 ## When To Use
 
 - The user has copied purchased rulebook PDFs, text extracts, or scans into `resources/rules/`.
@@ -18,19 +20,17 @@ Build the local machine-readable rules knowledge store from the user's privately
 ## Preconditions
 
 - The user must already own the relevant rule PDFs or lawful local rule sources.
-- The files must already exist under `resources/rules/`.
-- The repository Python environment should already be synced with `uv sync`.
+- The source files must already exist under `resources/rules/`.
 - Do not attempt rules-heavy preparation until this knowledge store has been built.
 
 ## Procedure
 
 1. Confirm that `resources/rules/` exists and contains source files.
-2. Check for `rga` first and prefer it for extraction when available.
-3. If OCR is needed for images or scanned material, use `tesseract` when available.
-4. If `coc-db/` already contains generated data, ask whether the user wants an in-place update or a full rebuild.
-5. Run `uv run python .agents/scripts/build_rules_db.py` for a fresh build, `uv run python .agents/scripts/build_rules_db.py --update` to merge new or changed sources into the existing store, or `uv run python .agents/scripts/build_rules_db.py --rebuild` to replace the store completely.
-6. Confirm that `coc-db/manifest.json`, `coc-db/indexes/`, `coc-db/sources/`, and `coc-db/topics/` were created.
-7. Tell the user that `coc-db/` is local-only and must not be committed.
+2. Apply the extraction defaults from [assistant spec](../../assistant-spec.md#required-behavior).
+3. If `coc-db/` already contains generated data, ask whether the user wants an in-place update or a full rebuild.
+4. Run `uv run python .agents/scripts/build_rules_db.py` for a fresh build, `uv run python .agents/scripts/build_rules_db.py --update` to merge new or changed sources into the existing store, or `uv run python .agents/scripts/build_rules_db.py --rebuild` to replace the store completely.
+5. Confirm that `coc-db/manifest.json`, `coc-db/indexes/`, `coc-db/sources/`, and `coc-db/topics/` were created.
+6. Remind the user that `coc-db/` is local-only under the [copyright and sourcing rules](../../assistant-spec.md#copyright-and-sourcing-rules).
 
 ## Notes
 

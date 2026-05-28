@@ -9,6 +9,8 @@ user-invocable: true
 
 Use the local `coc-db/` knowledge store to answer rules-heavy questions without reopening the original PDFs.
 
+Follow the shared sourcing, tooling, and privacy rules in [assistant spec](../../assistant-spec.md).
+
 ## When To Use
 
 - The user asks a rules question and `coc-db/manifest.json` already exists.
@@ -18,8 +20,8 @@ Use the local `coc-db/` knowledge store to answer rules-heavy questions without 
 ## Preconditions
 
 - The local rules knowledge store must already exist under `coc-db/`.
-- If it is missing or stale, use `/build-rules-db` first instead of guessing, and choose `--update` or `--rebuild` according to whether the user wants a merge or a clean replacement. Repository Python tooling should run through the project's `uv` environment.
-- Treat `coc-db/` as private derived content and do not propose committing or publishing it.
+- If it is missing or stale, use `/build-rules-db` first instead of guessing, and choose `--update` or `--rebuild` according to whether the user wants a merge or a clean replacement.
+- Treat `coc-db/` as local-only under the [copyright and sourcing rules](../../assistant-spec.md#copyright-and-sourcing-rules).
 
 ## Procedure
 

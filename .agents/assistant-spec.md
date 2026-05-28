@@ -4,6 +4,8 @@
 
 The CoC assistant helps a keeper turn local Call of Cthulhu 7th Edition scenario material into practical prep artifacts for one-shots and campaigns.
 
+This file is the canonical shared behavior contract for the platform-specific agent wrappers and the shared skills.
+
 ## Inputs
 
 - Purchased scenario PDFs stored locally under `resources/`.
@@ -23,20 +25,20 @@ The CoC assistant helps a keeper turn local Call of Cthulhu 7th Edition scenario
 - Cite the local source path and page when that information is available.
 - Use compact, scan-friendly output with headings, tables, and checklists when it helps.
 - Mark uncertainty explicitly instead of filling gaps with invented facts.
-- Before extracting information from PDFs, images, or other binary-heavy sources, check whether `rga` is available and prefer it over manual parsing when present.
-- When OCR is needed for images or scanned material and `tesseract` is available, use it.
-- When adding repository utility scripts, test helpers, or similar automation, use Python 3 so the tooling remains cross-platform.
-- For repository Python commands, use the project's `uv` environment: run `uv sync` first and invoke scripts or tests with `uv run python ...`.
-- For rules-heavy work, prefer the local `coc-db/` knowledge store after it has been built from `resources/rules/`, especially the JSON indexes under `indexes/` and the curated topic/source views under `topics/` and `sources/`.
-- If `coc-db/` already contains generated data and needs refreshing, ask whether the user wants `--update` to merge new or changed sources while reusing unchanged ones by `gxhash128` content hash or `--rebuild` to replace the store completely.
+- Prefer `rga` for PDF, image, and other binary-heavy extraction when available.
+- Use `tesseract` for OCR when available.
+- Use Python 3 for repository utilities and test helpers.
+- Run repository Python commands through `uv`: `uv sync`, then `uv run python ...`.
+- When the user provides a scenario PDF or folder plus a scenario name, materialize `scenarios/<scenario-name>/scenario.md` before producing downstream prep artifacts.
+- For rules-heavy work, prefer the local `coc-db/` knowledge store after it has been built, especially `indexes/`, `topics/`, and `sources/`.
+- If `coc-db/` already contains generated data, ask whether the user wants `--update` or `--rebuild` before refreshing it.
 
 ## Copyright and sourcing rules
 
-- Treat everything under `resources/` as local, copyrighted working material.
-- Treat everything under `coc-db/` as local generated data derived from copyrighted rulebooks.
+- Treat everything under `resources/`, `coc-db/`, and `scenarios/` as local-only working material.
 - Do not suggest committing, publishing, or sharing those files through the repository.
-- Do not produce long verbatim excerpts when a summary or short citation is sufficient.
-- If examples or fixtures are needed in version control, use synthetic or public-domain content only.
+- Keep quotes short; summarize instead of reproducing long excerpts.
+- Use synthetic or public-domain content for version-controlled examples and fixtures.
 
 ## Preferred deliverables
 
@@ -50,6 +52,7 @@ The CoC assistant helps a keeper turn local Call of Cthulhu 7th Edition scenario
 
 - `templates/` contains reusable output shapes such as `scenario-brief.md` and `session-plan.md`.
 - `.agents/scripts/` contains local PDF extraction, OCR, and scenario indexing helpers.
+- `.agents/scripts/import_scenario.py` materializes the full extracted scenario text under `scenarios/<scenario-name>/scenario.md`.
 - `.agents/skills/` contains shared on-demand workflows such as rules knowledge-store bootstrapping and lookup.
 - `coc-db/` contains the local text-based rules knowledge store built from `resources/rules/`.
 - `tests/fixtures/` contains synthetic or public-domain samples for prompt tests.
