@@ -30,8 +30,11 @@ This file is the canonical shared behavior contract for the platform-specific ag
 - Use Python 3 for repository utilities and test helpers.
 - Run repository Python commands through `uv`: `uv sync`, then `uv run python ...`.
 - When the user provides a scenario PDF or folder plus a scenario name, use `uv run python .agents/scripts/import_scenario.py ...` only as an internal extraction-staging step.
-- After the staging step, author `scenarios/<scenario-name>/scenario.md` as the final keeper-facing deliverable; do not treat the raw extraction as user-facing output.
-- The final `scenario.md` must consistently use the predominant language of the source material unless the user explicitly asks for translation.
+- After the staging step, author these keeper-facing deliverables by default: `scenarios/<scenario-name>/npcs-and-enemies.md`, `scenarios/<scenario-name>/story-overview.md`, and `scenarios/<scenario-name>/keeper-notes.md`.
+- Do not treat the raw extraction as user-facing output.
+- All final scenario deliverables must consistently use the predominant language of the source material unless the user explicitly asks for translation.
+- In the default scenario package, `keeper-notes.md` may reference `npcs-and-enemies.md`, but `npcs-and-enemies.md` must remain standalone and must not depend on `keeper-notes.md` for essential character information.
+- Before finishing an import-scenario workflow, validate the final scenario package against `scenarios/<scenario-name>/.source-extract.md` and repair any missing essential information rather than accepting information loss from summarization.
 - For rules-heavy work, prefer the local `coc-db/` knowledge store after it has been built, especially `indexes/`, `topics/`, and `sources/`.
 - If `coc-db/` already contains generated data, ask whether the user wants `--update` or `--rebuild` before refreshing it.
 
@@ -49,12 +52,13 @@ This file is the canonical shared behavior contract for the platform-specific ag
 - Clue map: mandatory clues, optional clues, clue dependencies, failure recovery.
 - Session plan: likely scene order, pacing notes, branch points, fallback scenes.
 - Campaign adaptation notes: how to connect scenarios, preserve themes, and reseed clues.
+- Default imported scenario package: `npcs-and-enemies.md`, `story-overview.md`, `keeper-notes.md`.
 
 ## Repository support files
 
 - `templates/` contains reusable output shapes such as `scenario-brief.md` and `session-plan.md`.
 - `.agents/scripts/` contains local PDF extraction, OCR, and scenario indexing helpers.
-- `.agents/scripts/import_scenario.py` materializes internal extraction staging under `scenarios/<scenario-name>/.source-extract.md` for the assistant to turn into the final keeper digest.
+- `.agents/scripts/import_scenario.py` materializes internal extraction staging under `scenarios/<scenario-name>/.source-extract.md` for the assistant to turn into the final keeper-facing scenario package.
 - `.agents/skills/` contains shared on-demand workflows such as rules knowledge-store bootstrapping and lookup.
 - `coc-db/` contains the local text-based rules knowledge store built from `resources/rules/`.
 - `tests/fixtures/` contains synthetic or public-domain samples for prompt tests.
