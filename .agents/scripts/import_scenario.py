@@ -3,11 +3,24 @@
 from __future__ import annotations
 
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 from extract_text import IMAGE_SUFFIXES, TEXT_SUFFIXES, extract_text
 
 SUPPORTED_SUFFIXES = {".pdf", *TEXT_SUFFIXES, *IMAGE_SUFFIXES}
+
+LANGUAGE_MARKERS = {
+  "German": (" der ", " die ", " das ", " und ", " nicht ", " mit ", " eine ", " einer ", " dem ", " den ", " von "),
+  "English": (" the ", " and ", " with ", " from ", " this ", " that ", " after ", " into ", " for ", " are ", " of "),
+}
+
+
+@dataclass(frozen=True)
+class SourceDocument:
+  path: Path
+  extractor_name: str
+  text: str
 
 
 def normalize_scenario_name(value: str) -> str:
@@ -33,24 +46,53 @@ def collect_source_files(source_path: Path) -> list[Path]:
   return []
 
 
-def render_markdown(scenario_name: str, extracted_documents: list[tuple[Path, str, str]]) -> str:
+def normalize_extracted_text(value: str) -> str:
+  return value.replace("\xad", "").rstrip()
+
+
+def detect_predominant_language(extracted_documents: list[SourceDocument]) -> str:
+  combined_text = " ".join(document.text.casefold() for document in extracted_documents)
+  combined_text = f" {' '.join(combined_text.split())} "
+
+  scores = {
+    language: sum(combined_text.count(marker) for marker in markers)
+    for language, markers in LANGUAGE_MARKERS.items()
+  }
+  ranked_scores = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+  if not ranked_scores or ranked_scores[0][1] == 0:
+    return "Match source document language manually"
+  if len(ranked_scores) > 1 and ranked_scores[0][1] == ranked_scores[1][1]:
+    return "Match source document language manually"
+  return ranked_scores[0][0]
+
+
+def render_staging_markdown(scenario_name: str, extracted_documents: list[SourceDocument]) -> str:
+  target_language = detect_predominant_language(extracted_documents)
   lines = [
-    f"# {scenario_name}",
+    f"# {scenario_name} Import Staging",
     "",
-    "Local extracted scenario text for keeper prep. Derived from private local source files.",
+    "Internal local extraction for assistant use. This is not the keeper-facing deliverable.",
+    "",
+    "## Output Language",
+    "",
+    f"- Predominant source language: {target_language}",
+    f"- Final deliverable: scenarios/{scenario_name}/scenario.md",
+    "- Requirement: Author the final keeper digest entirely in the predominant source language and keep the language consistent throughout the document.",
     "",
     "## Sources",
     "",
   ]
 
-  for source_path, extractor_name, _text in extracted_documents:
-    lines.append(f"- {source_path.as_posix()} ({extractor_name})")
+  for document in extracted_documents:
+    lines.append(f"- {document.path.as_posix()} ({document.extractor_name})")
 
-  lines.extend(["", "## Extracted Scenario"])
+  lines.extend(["", "## Extracted Source Material"])
 
-  for source_path, _extractor_name, text in extracted_documents:
-    lines.extend(["", f"### {source_path.name}", ""])
-    lines.append(text.rstrip())
+  for document in extracted_documents:
+    lines.extend(["", f"### {document.path.name}", ""])
+    lines.append(f"Source path: {document.path.as_posix()}")
+    lines.append(f"Extractor: {document.extractor_name}")
+    lines.extend(["", normalize_extracted_text(document.text)])
 
   lines.append("")
   return "\n".join(lines)
@@ -77,7 +119,7 @@ def main(argv: list[str]) -> int:
     print(f"No supported source files found in: {source_path}", file=sys.stderr)
     return 1
 
-  extracted_documents: list[tuple[Path, str, str]] = []
+  extracted_documents: list[SourceDocument] = []
   for candidate_path in source_files:
     extraction = extract_text(candidate_path)
     if extraction is None:
@@ -87,7 +129,7 @@ def main(argv: list[str]) -> int:
     if not extracted_text.strip():
       continue
 
-    extracted_documents.append((candidate_path, extractor_name, extracted_text))
+    extracted_documents.append(SourceDocument(path=candidate_path, extractor_name=extractor_name, text=extracted_text))
 
   if not extracted_documents:
     print(f"Unable to extract text from: {source_path}", file=sys.stderr)
@@ -96,8 +138,8 @@ def main(argv: list[str]) -> int:
   output_dir = Path("scenarios") / scenario_name
   output_dir.mkdir(parents=True, exist_ok=True)
 
-  output_path = output_dir / "scenario.md"
-  output_path.write_text(render_markdown(scenario_name, extracted_documents), encoding="utf-8")
+  output_path = output_dir / ".source-extract.md"
+  output_path.write_text(render_staging_markdown(scenario_name, extracted_documents), encoding="utf-8")
 
   print(output_path.as_posix())
   return 0

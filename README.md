@@ -31,7 +31,7 @@ Shared operating rules live in `.agents/assistant-spec.md`. Keep `.github/` and 
 
 - `.agents/scripts/`: Python 3 ingestion helpers for PDF text extraction, OCR, and scenario indexing.
 - `.agents/skills/build-rules-db/`: shared skill for bootstrapping the local rules knowledge store.
-- `.agents/skills/import-scenario/`: shared skill for turning a local scenario PDF or PDF folder into a keeper-facing markdown extract under `scenarios/`.
+- `.agents/skills/import-scenario/`: shared skill for turning a local scenario PDF or PDF folder into a keeper-facing markdown digest under `scenarios/`.
 - `.agents/skills/lookup-rules-db/`: shared skill for efficient lookup against an already built `coc-db/`.
 - `.agents/skills/references/`: shared reference docs used by multiple rules knowledge-store skills.
 - `templates/`: keeper-facing templates for scenario briefs, clue maps, NPC rosters, and session plans.
@@ -44,7 +44,7 @@ Shared operating rules live in `.agents/assistant-spec.md`. Keep `.github/` and 
 - Run `uv sync` once for setup, then use `uv run ...` for scripts and tests.
 - `uv run python .agents/scripts/extract_text.py <path>` extracts text from a local file and prefers `rga` when available.
 - `uv run python .agents/scripts/build_scenario_index.py` builds a lightweight TSV index at `.agents/local/scenario-index.tsv`.
-- `uv run python .agents/scripts/import_scenario.py <pdf-or-folder> <scenario-name>` extracts the full local scenario text into `scenarios/<scenario-name>/scenario.md`.
+- `uv run python .agents/scripts/import_scenario.py <pdf-or-folder> <scenario-name>` builds internal staging material in `scenarios/<scenario-name>/.source-extract.md` for the assistant-authored final digest.
 - `uv run python .agents/scripts/build_rules_db.py` builds the full-hybrid `coc-db/` knowledge store from the user-provided files in `resources/rules/`.
 - If `coc-db/` already contains generated content, ask whether the user wants `--update` or `--rebuild`.
 - `uv run pytest` runs the repository test suite.
@@ -68,7 +68,7 @@ This knowledge store is local-only and should be the default source for future r
 
 1. Store purchased rulebook PDFs under `resources/rules/` and scenario material under `resources/scenarios/`.
 2. Build the local rules knowledge store in `coc-db/` before doing further rules-heavy agent work.
-3. When the user provides a scenario PDF or folder plus a scenario name, materialize a local extract under `scenarios/<scenario-name>/scenario.md` before building derivative keeper notes.
+3. When the user provides a scenario PDF or folder plus a scenario name, stage the local source text with the import script, then author `scenarios/<scenario-name>/scenario.md` as the final keeper digest in the source document language before building derivative keeper notes.
 4. Use the CoC assistant agent to build keeper prep artifacts from those local sources.
 5. Keep generated public repo content limited to prompts, instructions, templates, schemas, and synthetic fixtures.
 

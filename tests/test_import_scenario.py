@@ -23,14 +23,18 @@ def test_import_scenario_writes_keeper_markdown_from_single_file(tmp_path: Path)
     errors="replace",
   )
 
-  output_path = tmp_path / "scenarios" / "Blackwater House" / "scenario.md"
+  output_dir = tmp_path / "scenarios" / "Blackwater House"
+  output_path = output_dir / ".source-extract.md"
   assert output_path.is_file()
+  assert not (output_dir / "scenario.md").exists()
 
   output_text = output_path.read_text(encoding="utf-8")
-  assert "# Blackwater House" in output_text
+  assert "# Blackwater House Import Staging" in output_text
+  assert "## Output Language" in output_text
+  assert "- Predominant source language: English" in output_text
   assert f"- {source_path.as_posix()} (rga)" in output_text or f"- {source_path.as_posix()} (text)" in output_text
-  assert "## Extracted Scenario" in output_text
-  assert "### whisper-in-blackwater-house.md" in output_text
+  assert "## Extracted Source Material" in output_text
+  assert f"### {source_path.name}" in output_text
   assert "Synthetic scenario fixture for regression testing." in output_text
 
 
@@ -52,12 +56,40 @@ def test_import_scenario_writes_sorted_sections_from_directory(tmp_path: Path) -
     errors="replace",
   )
 
-  output_path = tmp_path / "scenarios" / "House of Echoes" / "scenario.md"
+  output_dir = tmp_path / "scenarios" / "House of Echoes"
+  output_path = output_dir / ".source-extract.md"
   output_text = output_path.read_text(encoding="utf-8")
 
   assert output_path.is_file()
-  assert "### 01-intro.md" in output_text
-  assert "### 02-ending.md" in output_text
-  assert output_text.index("### 01-intro.md") < output_text.index("### 02-ending.md")
+  assert not (output_dir / "scenario.md").exists()
+  assert "## Sources" in output_text
+  assert f"- {intro_path.as_posix()} (rga)" in output_text or f"- {intro_path.as_posix()} (text)" in output_text
+  assert f"- {ending_path.as_posix()} (rga)" in output_text or f"- {ending_path.as_posix()} (text)" in output_text
+  assert output_text.index(intro_path.as_posix()) < output_text.index(ending_path.as_posix())
+  assert f"### {intro_path.name}" in output_text
+  assert f"### {ending_path.name}" in output_text
   assert "First scene." in output_text
   assert "Final scene." in output_text
+
+
+def test_import_scenario_records_german_output_language_for_german_source(tmp_path: Path) -> None:
+  source_path = tmp_path / "windschiefes-haus.md"
+  source_path.write_text(
+    "# Das windschiefe Haus\n\nDas Haus ist alt und die Bewohner sprechen nicht gern darueber.\n",
+    encoding="utf-8",
+  )
+
+  subprocess.run(
+    [sys.executable, str(SCRIPT_PATH), str(source_path), "Das windschiefe Haus"],
+    cwd=tmp_path,
+    check=True,
+    text=True,
+    encoding="utf-8",
+    errors="replace",
+  )
+
+  output_path = tmp_path / "scenarios" / "Das windschiefe Haus" / ".source-extract.md"
+  output_text = output_path.read_text(encoding="utf-8")
+
+  assert output_path.is_file()
+  assert "- Predominant source language: German" in output_text
