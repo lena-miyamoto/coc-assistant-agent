@@ -19,13 +19,21 @@ Local agent configuration for preparing Call of Cthulhu 7th Edition one-shots an
 - `.agents/`: shared keeper-assistant spec and local helper scripts used by both agent implementations.
 - `.agents/skills/`: canonical shared on-demand workflows and slash-command skills for both GitHub Copilot and Claude Code.
 - `.github/agents/`: GitHub Copilot custom agents.
+- `.github/skills/`: GitHub Copilot skill wrappers for shared `.agents/skills/` workflows.
 - `.claude/agents/`: Claude Code custom agents.
+- `.claude/skills/`: Claude Code skill wrappers for shared `.agents/skills/` workflows.
 - `coc-db/`: local-only text-based rules knowledge store built from purchased rulebook files.
 - `templates/`: reusable keeper-facing output shapes.
 - `tests/`: synthetic fixtures, prompt inputs, and regression checks.
 - `resources/`: local-only PDFs, OCR, and working extracts. Ignored by git.
 
 Shared operating rules live in `.agents/assistant-spec.md`. Keep `.github/` and `.claude/` limited to agent-specific wrappers.
+
+## Shared maintenance skills
+
+- `create-coc-skill`: creates a new shared skill with `.agents` source-of-truth plus `.github` and `.claude` wrappers.
+- `create-coc-agent`: creates a new paired Copilot and Claude agent that stays aligned with repo conventions.
+- `optimize`: audits and cleans up repo customization files to remove redundancy and restore a clear source of truth.
 
 ## Included scaffolding
 

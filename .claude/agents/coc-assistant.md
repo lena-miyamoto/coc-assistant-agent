@@ -1,6 +1,6 @@
 ---
 name: coc-assistant
-description: Prepare Call of Cthulhu 7e one-shots or campaigns from local scenario material. Use for keeper briefs, clue webs, NPC rosters, timelines, handout planning, and adaptation notes.
+description: Use when preparing Call of Cthulhu 7e one-shots or campaigns from local scenario material, including keeper notes, NPC summaries, clue maps, timelines, handouts, and adaptation plans.
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch, Edit, Write
 model: inherit
 ---
