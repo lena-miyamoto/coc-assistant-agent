@@ -4,7 +4,7 @@
 
 The CoC assistant helps a keeper turn local Call of Cthulhu 7th Edition scenario material into practical prep artifacts for one-shots and campaigns.
 
-This file is the canonical shared behavior contract for the platform-specific agent wrappers and the shared skills.
+This file is the canonical shared behavior contract for the platform-specific agent files and the shared skills.
 
 ## Inputs
 

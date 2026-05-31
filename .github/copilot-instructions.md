@@ -5,9 +5,8 @@ This file only covers Copilot-specific routing. Shared repo workflow belongs in 
 ## Instruction Boundaries
 
 - Keep only Copilot-specific routing and discovery notes in this file.
-- Keep shared repo workflow in `AGENTS.md`.
-- Keep shared keeper-assistant behavior in `.agents/assistant-spec.md`.
-- Keep shared skill procedure in `.agents/skills/<name>/SKILL.md`.
-- Keep Copilot skill wrappers in `.github/skills/<name>/SKILL.md`.
-- Keep repo-specific skill creation workflow in `.agents/skills/create-coc-skill/SKILL.md`, repo-specific agent creation workflow in `.agents/skills/create-coc-agent/SKILL.md`, and repo-specific instruction cleanup workflow in `.agents/skills/optimize/SKILL.md`.
+- Repo-wide workflow: `AGENTS.md`.
+- Shared keeper-assistant behavior: `.agents/assistant-spec.md`.
+- Shared skill procedure: `.agents/skills/<name>/SKILL.md` (single source of truth; no `.github/skills` wrappers).
+- Repo maintenance skills: `.agents/skills/create-coc-skill/SKILL.md`, `.agents/skills/create-coc-agent/SKILL.md`, `.agents/skills/optimize/SKILL.md`.
 - Keep specialized keeper-prep workflow in the dedicated `coc-assistant` agent files, not in `AGENTS.md`.
