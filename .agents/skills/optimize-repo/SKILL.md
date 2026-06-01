@@ -1,11 +1,11 @@
 ---
-name: optimize
+name: optimize-repo
 description: 'Optimize this repo''s instruction, skill, and agent files: cut redundancy, restore source-of-truth ownership, keep Copilot and Claude surfaces aligned. Use when cleaning up customization files in this workspace.'
 argument-hint: 'Scope to optimize; report-only or apply fixes'
 user-invocable: true
 ---
 
-# Optimize
+# Optimize Repo
 
 Cross-harness source of truth for optimizing this repo's customization and instruction files. Also the audit path: run report-only when the user wants findings without edits.
 
@@ -18,32 +18,37 @@ Cross-harness source of truth for optimizing this repo's customization and instr
 ## Procedure
 
 1. Mode: review-only (report) or cleanup (smallest edits that restore ownership and cut repetition).
-2. Re-verify every in-scope `*.md` for writing quality:
+2. Respect repo ignore boundaries before any audit or edit:
+   - Treat all files and folders excluded by `.gitignore` as out of scope for this skill.
+   - Do not read, audit, edit, move, delete, or regenerate ignored paths.
+   - If a requested cleanup would require touching an ignored path, stop and report that it is intentionally excluded.
+3. Re-verify every in-scope `*.md` for writing quality:
    - Cut verbosity and repetition.
    - Compress explanation when meaning survives.
    - Tighten wording even when structure is fine.
-3. Anchor on boundaries from `AGENTS.md` and `.github/copilot-instructions.md`:
+4. Anchor on boundaries from `AGENTS.md` and `.github/copilot-instructions.md`:
    - Shared procedure: `.agents/skills/<name>/SKILL.md` (single source of truth; no `.github/skills` or `.claude/skills` wrappers — enforced by `tests/test_skill_mirrors.py`).
    - Repo-wide workflow: `AGENTS.md`.
    - Harness routing: `CLAUDE.md`, `.github/copilot-instructions.md`.
    - Agents: short, role-focused.
-4. Audit before editing:
+5. Audit before editing:
    - Duplicated procedure across shared skills and repo docs.
    - Stale paths or source-of-truth references.
    - Paired agents drifted beyond needed harness differences.
    - Repo docs restating routing owned elsewhere.
-5. Narrowest useful fix:
+6. Narrowest useful fix:
    - Delete over rewrite.
    - Update references over adding explanation.
    - One owner per stable rule.
    - Keep discovery-critical frontmatter; shrink only duplicated body.
-6. Re-check after edits:
+7. Re-check after edits:
    - Names, descriptions, argument hints aligned.
    - Repo docs advertise only surfaces worth exposing.
 
 ## Writing Rules
 
 - Strict source-of-truth ownership.
+- Anything excluded by `.gitignore` is out of scope and must remain untouched.
 - Paired agents stay short unless a harness difference forces more.
 - Preserve keyword-rich frontmatter for discovery.
 - Match the repo's direct procedural tone.
@@ -55,11 +60,12 @@ Cross-harness source of truth for optimizing this repo's customization and instr
 ## Validation
 
 1. Markdown/frontmatter diagnostics on every changed file.
-2. Grep for stale paths, outdated source-of-truth references, old duplicated phrases.
-3. Re-read each changed `*.md` for verbosity and repetition; tighten until no obvious padding remains.
-4. Shared skill files hold the procedure; no `SKILL.md` exists under `.github/skills` or `.claude/skills`.
-5. Paired agents aligned except for needed harness differences.
-6. Routing/README changes match actual file layout.
+2. Confirm no file or folder excluded by `.gitignore` was touched.
+3. Grep for stale paths, outdated source-of-truth references, old duplicated phrases.
+4. Re-read each changed `*.md` for verbosity and repetition; tighten until no obvious padding remains.
+5. Shared skill files hold the procedure; no `SKILL.md` exists under `.github/skills` or `.claude/skills`.
+6. Paired agents aligned except for needed harness differences.
+7. Routing/README changes match actual file layout.
 
 ## Output
 

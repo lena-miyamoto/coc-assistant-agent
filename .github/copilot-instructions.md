@@ -8,5 +8,5 @@ This file only covers Copilot-specific routing. Shared repo workflow belongs in 
 - Repo-wide workflow: `AGENTS.md`.
 - Shared keeper-assistant behavior: `.agents/assistant-spec.md`.
 - Shared skill procedure: `.agents/skills/<name>/SKILL.md` (single source of truth; no `.github/skills` wrappers).
-- Repo maintenance skills: `.agents/skills/create-coc-skill/SKILL.md`, `.agents/skills/create-coc-agent/SKILL.md`, `.agents/skills/optimize/SKILL.md`.
+- Repo maintenance skills: `.agents/skills/create-coc-skill/SKILL.md`, `.agents/skills/create-coc-agent/SKILL.md`, `.agents/skills/optimize-repo/SKILL.md`.
 - Keep specialized keeper-prep workflow in the dedicated `coc-assistant` agent files, not in `AGENTS.md`.

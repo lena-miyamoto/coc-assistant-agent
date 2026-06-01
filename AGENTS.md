@@ -17,4 +17,4 @@ This repo contains reusable Call of Cthulhu 7e keeper-assistant configuration fo
 - Repository-wide onboarding for GitHub Copilot lives in `.github/copilot-instructions.md`.
 - Shared-skill creation: `.agents/skills/create-coc-skill/SKILL.md`.
 - Paired-agent creation: `.agents/skills/create-coc-agent/SKILL.md`.
-- Instruction cleanup: `.agents/skills/optimize/SKILL.md`.
+- Instruction cleanup: `.agents/skills/optimize-repo/SKILL.md`.

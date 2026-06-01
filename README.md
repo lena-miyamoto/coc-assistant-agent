@@ -31,7 +31,7 @@ Shared operating rules live in `.agents/assistant-spec.md`. Keep `.github/` and 
 
 - `create-coc-skill`: creates a new shared skill under `.agents/skills/`.
 - `create-coc-agent`: creates a new paired Copilot and Claude agent that stays aligned with repo conventions.
-- `optimize`: audits and cleans up repo customization files to remove redundancy and restore a clear source of truth.
+- `optimize-repo`: audits and cleans up repo customization files to remove redundancy and restore a clear source of truth.
 
 ## Included scaffolding
 

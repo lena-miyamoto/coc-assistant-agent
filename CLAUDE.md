@@ -8,4 +8,4 @@
 - Keep shared behavior in `.agents/assistant-spec.md` and repository-wide defaults in `AGENTS.md`.
 - Use `.agents/skills/create-coc-skill/SKILL.md` when adding a new shared repo skill.
 - Use `.agents/skills/create-coc-agent/SKILL.md` when adding a new paired repo agent for Copilot and Claude.
-- Use `.agents/skills/optimize/SKILL.md` when auditing or cleaning up repo customization files.
+- Use `.agents/skills/optimize-repo/SKILL.md` when auditing or cleaning up repo customization files.
